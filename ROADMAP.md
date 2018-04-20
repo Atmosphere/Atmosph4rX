@@ -6,7 +6,9 @@
 * Support for WebSocket
 * Native Kafka Stream support
 * First release (0.1)
+* Community call
 
 ## June 2018
 * Support for atmosphere.js 
 * Support for React Native
+
