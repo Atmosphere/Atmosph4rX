@@ -3,7 +3,7 @@
 SpringBoot 2 + Project Reactor + Atmosphere = Atmosph4rX
 
 ```java    
-@ReactTo("/mySubscriber")
+       @ReactTo("/mySubscriber")
        public final static class RxTest9 implements AxSubscriber<String> {
    
            @Topic("/message")
