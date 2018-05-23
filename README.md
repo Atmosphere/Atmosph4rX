@@ -1,4 +1,5 @@
-# Welcome to the Atmosph4rX Framework, the Reactive Streams Framework!
+# Welcome to the Atmosph4rX Framework!
+## The Reactive Streams Framework for Java
 
 SpringBoot 2 + Project Reactor + Atmosphere = *Atmosph4rX*. [Reactive Streams](http://www.reactive-streams.org/) made easy!
 
