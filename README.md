@@ -1,6 +1,8 @@
-## Welcome to the Atmosph4rX Framework!
+## Welcome to the Atmosph4rX Framework, the Reactive Streams Framework!
 
-SpringBoot 2 + Project Reactor + Atmosphere = Atmosph4rX
+SpringBoot 2 + Project Reactor + Atmosphere = *Atmosph4rX*. [Reactive Streams](http://www.reactive-streams.org/) made easy!
+
+Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.com/Atmosphere/atmosphere). All the functionalities are or will be ported to Atmosph4rX.
 
 ```java    
        @ReactTo("/mySubscriber")
@@ -31,4 +33,14 @@ SpringBoot 2 + Project Reactor + Atmosphere = Atmosph4rX
            }
    
        }
+```
+
+## How to install
+
+```xml
+     <dependency>
+         <groupId>org.atmosphere</groupId>
+         <artifactId>atmosph4rx</artifactId>
+         <version>4.0.0-SNAPSHOT</version>
+      </dependency>
 ```
