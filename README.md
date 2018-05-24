@@ -9,9 +9,11 @@ Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.co
 * Work in Progress
 
 ## As simple as
+
+### Reactive Stream Subscriber
 ```java    
        @ReactTo("/mySubscriber")
-       public final class RxTest9 implements AxSubscriber<String> {
+       public final class MySubscriber implements AxSubscriber<String> {
    
            @Topic("/message")
            private MultiLinkProcessor<String> processor;
@@ -23,7 +25,7 @@ Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.co
    
            @Override
            public void onNext(String next) {
-                // Push data to all Link that subscribed to the Processor
+                // Push data to all {@link Subscriber}s. Subscribers include Link, AxSubscriber or Subscriber 
                 processor.publish(next);
            }
    
@@ -34,6 +36,34 @@ Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.co
            @Override
            public void onError(Throwable throwable) {
            }
+   
+       }
+```
+
+### Annotation based
+```java    
+       @ReactTo("/foo")
+       public final class MyPoJo {
+   
+           @Topic("/message")
+           private MultiLinkProcessor<String> processor;
+   
+           @Open
+           public void open() {
+           }
+        
+           @Close
+           public void close() {
+           }
+        
+           @Message
+           public void on(String message) {
+              processor.publish(next);
+           }
+        
+           @Error
+           public void error() {
+           }         
    
        }
 ```
