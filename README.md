@@ -11,15 +11,13 @@ Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.co
 ## As simple as
 ```java    
        @ReactTo("/mySubscriber")
-       public final static class RxTest9 implements AxSubscriber<String> {
+       public final class RxTest9 implements AxSubscriber<String> {
    
            @Topic("/message")
            private MultiLinkProcessor<String> processor;
    
            @Override
            public void onSubscribe(AxSubscription s) {
-               // Add a Link to the Processor
-               // A Link represent a unique connection.
                processor.subscribe(s.link());
            }
    
