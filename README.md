@@ -1,12 +1,14 @@
 # Welcome to the Atmosph4rX Framework!
-## The Reactive Streams Framework for Java
+## The WebSocket Reactive Streams Framework for Java
 
-SpringBoot 2 + Project Reactor + Atmosphere = *Atmosph4rX*. [Reactive Streams](http://www.reactive-streams.org/) made easy!
+[SpringBoot 2](https://projects.spring.io/spring-boot/) + [Project Reactor](https://projectreactor.io/) + [Atmosphere](https://github.com/Atmosphere/atmosphere) = **Atmosph4rX**. 
+
+[Reactive Streams](http://www.reactive-streams.org/) made easy!
 
 Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.com/Atmosphere/atmosphere). All the functionalities are or will be ported to Atmosph4rX.
 
 ## ROADMAP
-* Work in Progress
+* Work in Progress. See [ROADMAP](./ROADMAP.md) for more details.
 
 ## As simple as
 
