@@ -10,7 +10,7 @@ Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.co
 
 ## As simple as
 
-### Reactive Stream Subscriber
+### Reactive Streams Subscriber
 ```java    
        @ReactTo("/mySubscriber")
        public final class MySubscriber implements AxSubscriber<String> {
