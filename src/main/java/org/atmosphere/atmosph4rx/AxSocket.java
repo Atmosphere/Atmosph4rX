@@ -24,7 +24,7 @@ import org.reactivestreams.Processor;
  * @param <T> a {@link Processor}
  * @param <U> a {@link String}
  */
-public interface AxSocket<T extends Processor<? super String, ? super String>, U> extends SocketsGroup<T,U> {
+public interface AxSocket<T extends Processor<? super String, ? super String>, U> extends AxSockets<T,U> {
 
     default String topic(){
         return id();

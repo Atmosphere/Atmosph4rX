@@ -39,7 +39,7 @@ public class AxSubscription implements Subscription {
     public AxSocket<Processor<? super String, ? super String>, String> socket() {
         return new AxSocket<Processor<? super String, ? super String>, String>() {
             @Override
-            public SocketsGroup<Processor<? super String, ? super String>, String> publish(String message) {
+            public AxSockets<Processor<? super String, ? super String>, String> publish(String message) {
                 outputProcessor.out().onNext(message);
                 return this;
             }

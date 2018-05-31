@@ -17,7 +17,7 @@ package org.atmosphere.atmosph4rx;
 
 import org.atmosphere.atmosph4rx.annotation.ReactTo;
 import org.atmosphere.atmosph4rx.annotation.Topic;
-import org.atmosphere.atmosph4rx.core.SocketsGroupProcessor;
+import org.atmosphere.atmosph4rx.core.AxSocketsProcessor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.reactivestreams.Processor;
@@ -399,7 +399,7 @@ public class Atmosph4rXTests {
         static boolean onError;
 
         @Topic("test")
-        private SocketsGroupProcessor<String> broadcaster;
+        private AxSocketsProcessor<String> broadcaster;
 
         @Override
         public void onSubscribe(AxSubscription s) {
@@ -467,7 +467,7 @@ public class Atmosph4rXTests {
         static boolean onError;
 
         @Topic("test-8")
-        private SocketsGroupProcessor<String> broadcaster;
+        private AxSocketsProcessor<String> broadcaster;
 
         @Override
         public void onSubscribe(AxSubscription s) {
@@ -548,7 +548,7 @@ public class Atmosph4rXTests {
         static boolean onError;
 
         @Topic("test-9")
-        private SocketsGroupProcessor<String> broadcaster;
+        private AxSocketsProcessor<String> broadcaster;
 
         @Override
         public void onSubscribe(AxSubscription s) {

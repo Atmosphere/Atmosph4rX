@@ -17,7 +17,7 @@ package org.atmosphere.atmosph4rx.injector;
 
 import org.atmosphere.atmosph4rx.annotation.Topic;
 import org.atmosphere.atmosph4rx.core.AxReactorProcessorFactory;
-import org.atmosphere.atmosph4rx.core.SocketsGroupProcessor;
+import org.atmosphere.atmosph4rx.core.AxSocketsProcessor;
 import org.reactivestreams.Processor;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.context.annotation.Bean;
@@ -38,10 +38,10 @@ public class AxProcessorInjector {
     @Inject
     private AxReactorProcessorFactory processorsFactory;
 
-    private final Map<String, SocketsGroupProcessor<?>> aXProcessors = new LinkedHashMap<>();
+    private final Map<String, AxSocketsProcessor<?>> aXProcessors = new LinkedHashMap<>();
 
     @Bean
-    public SocketsGroupProcessor<String> construct(DependencyDescriptor ip) {
+    public AxSocketsProcessor<String> construct(DependencyDescriptor ip) {
 
 //        if (!ip.isPresent()) return null;
 
@@ -58,12 +58,12 @@ public class AxProcessorInjector {
     }
 
     @SuppressWarnings("unchecked")
-    private <IN> SocketsGroupProcessor<String> toBroadcaster(String topic, Class<IN> in) {
+    private <IN> AxSocketsProcessor<String> toBroadcaster(String topic, Class<IN> in) {
 
-        SocketsGroupProcessor<String> cIn = (SocketsGroupProcessor<String>) aXProcessors.get(topic);
+        AxSocketsProcessor<String> cIn = (AxSocketsProcessor<String>) aXProcessors.get(topic);
         if (cIn == null) {
             Processor<String, String> tp = processorsFactory.createMultiLinkProcessor();
-            cIn = new SocketsGroupProcessor<String>() {
+            cIn = new AxSocketsProcessor<String>() {
 
                 @Override
                 public Processor<String, String> toProcessor() {
@@ -76,7 +76,7 @@ public class AxProcessorInjector {
                 }
 
                 @Override
-                public SocketsGroupProcessor<String> publish(String message) {
+                public AxSocketsProcessor<String> publish(String message) {
                     tp.onNext(message);
                     return this;
                 }

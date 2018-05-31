@@ -66,7 +66,7 @@ public interface AxSubscriber<T> extends Subscriber<T> {
 
     /**
      * Data notification sent by a {@link Publisher} in response to requests to {@link Subscription#request(long)}.
-     * The {@code payload} can comes from a {@link SocketsGroup}, a {@link AxSocket} or a websocket/http connection.
+     * The {@code payload} can comes from a {@link AxSockets}, a {@link AxSocket} or a websocket/http connection.
      *
      * @param payload the element signaled
      */
@@ -75,7 +75,7 @@ public interface AxSubscriber<T> extends Subscriber<T> {
 
     /**
      * Data notification sent by a {@link Publisher} in response to requests to {@link Subscription#request(long)}.
-     * The {@code payload} can comes from a {@link SocketsGroup}, a {@link AxSocket} or a websocket/http connection.
+     * The {@code payload} can comes from a {@link AxSockets}, a {@link AxSocket} or a websocket/http connection.
      *
      * @param link The {@link AxSocket} representing the underlying websocket or http connection
      * @param payload The {@link String} payload received
@@ -86,7 +86,7 @@ public interface AxSubscriber<T> extends Subscriber<T> {
 
     /**
      * Data notification sent by the {@link Publisher} in response to requests to {@link Subscription#request(long)}.
-     * The {@code payload} can comes from a {@link SocketsGroup}, a {@link AxSocket} or a websocket/http connection.
+     * The {@code payload} can comes from a {@link AxSockets}, a {@link AxSocket} or a websocket/http connection.
      *
      * @param link
      * @param <U>
@@ -97,7 +97,7 @@ public interface AxSubscriber<T> extends Subscriber<T> {
 
     /**
      * Data notification sent by a {@link Publisher} in response to requests to {@link Subscription#request(long)}.
-     * The {@code payload} can comes from a {@link SocketsGroup}, a {@link AxSocket} or a websocket/http connection.
+     * The {@code payload} can comes from a {@link AxSockets}, a {@link AxSocket} or a websocket/http connection.
      *
      * @param link The {@link AxSocket} representing the underlying websocket or http connection
      * @param payload The {@link byte} payload received

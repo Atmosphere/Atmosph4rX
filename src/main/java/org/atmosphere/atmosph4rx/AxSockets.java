@@ -13,18 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.atmosphere.atmosph4rx.core;
+package org.atmosphere.atmosph4rx;
 
-import org.atmosphere.atmosph4rx.AxSocket;
-import org.atmosphere.atmosph4rx.SocketsGroup;
+
 import org.reactivestreams.Processor;
 
-public interface SocketsGroupProcessor<IN extends String> extends SocketsGroup<Processor<? super String, ? super String>, String> {
+public interface AxSockets<T extends Processor<? super String, ? super String>, U> {
 
-    @Override
-    Processor<String,String> toProcessor();
+    String topic();
 
-    default void subscribe(AxSocket<Processor<? super String, ? super String>, IN> single){
-        toProcessor().subscribe(single.toProcessor());
-    }
+    AxSockets<T, U> publish(U message);
+
+    T toProcessor();
+
 }
