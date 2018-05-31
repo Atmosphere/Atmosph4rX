@@ -3,10 +3,9 @@ org/atmosphere/atmosph4rx/util/uri/UriTemplateParser$StringCharacterIterator.cla
 org/atmosphere/atmosph4rx/core/AnnotationsScanner$Context.class
 org/atmosphere/atmosph4rx/core/AxAnnotationDrivenSubscriber$1.class
 org/atmosphere/atmosph4rx/util/uri/UriPattern.class
-org/atmosphere/atmosph4rx/MultiLink.class
 org/atmosphere/atmosph4rx/annotation/ReactTo.class
+org/atmosphere/atmosph4rx/AxSocket.class
 org/atmosphere/atmosph4rx/injector/AxProcessorInjector$1.class
-org/atmosphere/atmosph4rx/core/MultiLinkProcessor.class
 org/atmosphere/atmosph4rx/defaults/DefaultThrowablesHandler.class
 org/atmosphere/atmosph4rx/core/AnnotationsScanner.class
 org/atmosphere/atmosph4rx/core/STAGE.class
@@ -16,7 +15,7 @@ org/atmosphere/atmosph4rx/boot/WebSocketSupport.class
 org/atmosphere/atmosph4rx/defaults/AxSubscriberInvoker.class
 org/atmosphere/atmosph4rx/AxSubscription$1.class
 org/atmosphere/atmosph4rx/boot/Bootstrap.class
-org/atmosphere/atmosph4rx/Link.class
+org/atmosphere/atmosph4rx/core/SocketsGroupProcessor.class
 org/atmosphere/atmosph4rx/boot/Atmosph4rXConfig.class
 org/atmosphere/atmosph4rx/defaults/DefaultAxReactorProcessorFactory.class
 org/atmosphere/atmosph4rx/util/uri/UriComponent$1.class
@@ -52,4 +51,5 @@ org/atmosphere/atmosph4rx/annotation/Open.class
 org/atmosphere/atmosph4rx/injector/AxProcessorInjector.class
 org/atmosphere/atmosph4rx/injector/EndpointMapperInjector.class
 org/atmosphere/atmosph4rx/util/uri/UriTemplate.class
+org/atmosphere/atmosph4rx/SocketsGroup.class
 org/atmosphere/atmosph4rx/annotation/Message.class

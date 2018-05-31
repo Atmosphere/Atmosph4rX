@@ -17,7 +17,7 @@ package org.atmosphere.atmosph4rx.defaults;
 
 import org.atmosphere.atmosph4rx.AxSubscriber;
 import org.atmosphere.atmosph4rx.AxSubscription;
-import org.atmosphere.atmosph4rx.Link;
+import org.atmosphere.atmosph4rx.AxSocket;
 import org.atmosphere.atmosph4rx.core.AxMetaData;
 import org.atmosphere.atmosph4rx.defaults.DefaultAxRouter.AxProcessor;
 import org.reactivestreams.Processor;
@@ -39,10 +39,10 @@ class AxSubscriberInvoker<T> implements AxSubscriber<T> {
     public void onNext(T payload) {
         axSubscriber.onNext(payload);
 
-        Link<Processor<String, String>, String> single = new Link<Processor<String, String>, String>() {
+        AxSocket<Processor<String, String>, String> single = new AxSocket<Processor<String, String>, String>() {
 
             @Override
-            public Link<Processor<String, String>, String> publish(String message) {
+            public AxSocket<Processor<String, String>, String> publish(String message) {
                 toProcessor().onNext(message);
                 return this;
             }
@@ -93,16 +93,16 @@ class AxSubscriberInvoker<T> implements AxSubscriber<T> {
         axSubscriber.onNext(payload);
     }
 
-    public <U extends Processor<? super String, ? super String>> void onNext(Link<U, String> single, String payload) {
+    public <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, String> single, String payload) {
         axSubscriber.onNext(single, payload);
     }
 
     @Override
-    public <U extends Processor<? super String, ? super String>, V> void onNext(Link<U, V> single) {
+    public <U extends Processor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
         axSubscriber.onNext(single);         
     }
 
-    public <U extends Processor<? super String, ? super String>> void onNext(Link<U, byte[]> single, byte[] payload) {
+    public <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, byte[]> single, byte[] payload) {
         axSubscriber.onNext(single, payload);
     }
 }

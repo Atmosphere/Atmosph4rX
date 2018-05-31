@@ -17,7 +17,7 @@ package org.atmosphere.atmosph4rx;
 
 import org.atmosphere.atmosph4rx.annotation.ReactTo;
 import org.atmosphere.atmosph4rx.annotation.Topic;
-import org.atmosphere.atmosph4rx.core.MultiLinkProcessor;
+import org.atmosphere.atmosph4rx.core.SocketsGroupProcessor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.reactivestreams.Processor;
@@ -338,7 +338,7 @@ public class Atmosph4rXTests {
         }
 
         @Override
-        public <U extends Processor<? super String, ? super String>, V> void onNext(Link<U, V> single) {
+        public <U extends Processor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
             onNext = true;
             single.toProcessor().onNext("test6-ping");
             latch.countDown();
@@ -399,16 +399,16 @@ public class Atmosph4rXTests {
         static boolean onError;
 
         @Topic("test")
-        private MultiLinkProcessor<String> broadcaster;
+        private SocketsGroupProcessor<String> broadcaster;
 
         @Override
         public void onSubscribe(AxSubscription s) {
             onSubscribe = true;
-            broadcaster.subscribe(s.link());
+            broadcaster.subscribe(s.socket());
         }
 
         @Override
-        public <U extends Processor<? super String, ? super String>, V> void onNext(Link<U, V> single) {
+        public <U extends Processor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
             onNext = true;
             broadcaster.publish("test7-ping");
             latch.countDown();
@@ -467,12 +467,12 @@ public class Atmosph4rXTests {
         static boolean onError;
 
         @Topic("test-8")
-        private MultiLinkProcessor<String> broadcaster;
+        private SocketsGroupProcessor<String> broadcaster;
 
         @Override
         public void onSubscribe(AxSubscription s) {
             onSubscribe = true;
-            broadcaster.subscribe(s.link());
+            broadcaster.subscribe(s.socket());
         }
 
         @Override
@@ -547,19 +547,19 @@ public class Atmosph4rXTests {
         static boolean onComplete;
         static boolean onError;
 
-        @Topic("test-8")
-        private MultiLinkProcessor<String> broadcaster;
+        @Topic("test-9")
+        private SocketsGroupProcessor<String> broadcaster;
 
         @Override
         public void onSubscribe(AxSubscription s) {
             onSubscribe = true;
-            broadcaster.subscribe(s.link());
+            broadcaster.subscribe(s.socket());
         }
 
         @Override
         public void onNext(String next) {
             onNext = true;
-            broadcaster.publish(next);
+            broadcaster.toProcessor().onNext(next);
             latch.countDown();
         }
 
@@ -586,7 +586,7 @@ public class Atmosph4rXTests {
         ReplayProcessor<Object> output2 = ReplayProcessor.create(1);
 
 
-        URI url = new URI("ws://127.0.0.1:" + port + "/test8");
+        URI url = new URI("ws://127.0.0.1:" + port + "/test9");
         client.execute(url, session ->
                 session
                         .send(input.doOnNext(s -> logger.debug("outbound " + s)).map(session::textMessage))
@@ -607,7 +607,7 @@ public class Atmosph4rXTests {
                 .doOnSuccessOrError((aVoid, ex) -> logger.debug("Done: " + (ex != null ? ex.getMessage() : "success")))
                 .block(TIMEOUT);
 
-        RxTest8.latch.await();
+        RxTest9.latch.await();
 
         assertEquals(input.mergeWith(input2).collectList().block(TIMEOUT), output.mergeWith(output2).collectList().block(TIMEOUT));
 

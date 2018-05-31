@@ -36,10 +36,10 @@ public class AxSubscription implements Subscription {
         return metaData;
     }
 
-    public Link<Processor<? super String, ? super String>, String> link() {
-        return new Link<Processor<? super String, ? super String>, String>() {
+    public AxSocket<Processor<? super String, ? super String>, String> socket() {
+        return new AxSocket<Processor<? super String, ? super String>, String>() {
             @Override
-            public MultiLink<Processor<? super String, ? super String>, String> publish(String message) {
+            public SocketsGroup<Processor<? super String, ? super String>, String> publish(String message) {
                 outputProcessor.out().onNext(message);
                 return this;
             }

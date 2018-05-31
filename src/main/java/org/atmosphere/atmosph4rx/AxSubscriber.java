@@ -66,7 +66,7 @@ public interface AxSubscriber<T> extends Subscriber<T> {
 
     /**
      * Data notification sent by a {@link Publisher} in response to requests to {@link Subscription#request(long)}.
-     * The {@code payload} can comes from a {@link MultiLink}, a {@link Link} or a websocket/http connection.
+     * The {@code payload} can comes from a {@link SocketsGroup}, a {@link AxSocket} or a websocket/http connection.
      *
      * @param payload the element signaled
      */
@@ -75,35 +75,35 @@ public interface AxSubscriber<T> extends Subscriber<T> {
 
     /**
      * Data notification sent by a {@link Publisher} in response to requests to {@link Subscription#request(long)}.
-     * The {@code payload} can comes from a {@link MultiLink}, a {@link Link} or a websocket/http connection.
+     * The {@code payload} can comes from a {@link SocketsGroup}, a {@link AxSocket} or a websocket/http connection.
      *
-     * @param link The {@link Link} representing the underlying websocket or http connection
+     * @param link The {@link AxSocket} representing the underlying websocket or http connection
      * @param payload The {@link String} payload received
      * @param <U>
      */
-    default <U extends Processor<? super String, ? super String>> void onNext(Link<U, String> link, String payload) {
+    default <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, String> link, String payload) {
     }
 
     /**
      * Data notification sent by the {@link Publisher} in response to requests to {@link Subscription#request(long)}.
-     * The {@code payload} can comes from a {@link MultiLink}, a {@link Link} or a websocket/http connection.
+     * The {@code payload} can comes from a {@link SocketsGroup}, a {@link AxSocket} or a websocket/http connection.
      *
      * @param link
      * @param <U>
      * @param <V>
      */
-    default <U extends Processor<? super String, ? super String>, V> void onNext(Link<U, V> link) {
+    default <U extends Processor<? super String, ? super String>, V> void onNext(AxSocket<U, V> link) {
     }
 
     /**
      * Data notification sent by a {@link Publisher} in response to requests to {@link Subscription#request(long)}.
-     * The {@code payload} can comes from a {@link MultiLink}, a {@link Link} or a websocket/http connection.
+     * The {@code payload} can comes from a {@link SocketsGroup}, a {@link AxSocket} or a websocket/http connection.
      *
-     * @param link The {@link Link} representing the underlying websocket or http connection
+     * @param link The {@link AxSocket} representing the underlying websocket or http connection
      * @param payload The {@link byte} payload received
      * @param <U>
      */
-    default <U extends Processor<? super String, ? super String>> void onNext(Link<U, byte[]> link, byte[] payload) {
+    default <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, byte[]> link, byte[] payload) {
     }
 
 }

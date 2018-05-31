@@ -15,16 +15,16 @@
  */
 package org.atmosphere.atmosph4rx.core;
 
-import org.atmosphere.atmosph4rx.Link;
-import org.atmosphere.atmosph4rx.MultiLink;
+import org.atmosphere.atmosph4rx.AxSocket;
+import org.atmosphere.atmosph4rx.SocketsGroup;
 import org.reactivestreams.Processor;
 
-public interface MultiLinkProcessor<IN extends String> extends MultiLink<Processor<? super String, ? super String>, String> {
+public interface SocketsGroupProcessor<IN extends String> extends SocketsGroup<Processor<? super String, ? super String>, String> {
 
     @Override
     Processor<String,String> toProcessor();
 
-    default void subscribe(Link<Processor<? super String, ? super String>, IN> single){
+    default void subscribe(AxSocket<Processor<? super String, ? super String>, IN> single){
         toProcessor().subscribe(single.toProcessor());
     }
 }

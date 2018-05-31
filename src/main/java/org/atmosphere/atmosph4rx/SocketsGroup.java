@@ -15,14 +15,15 @@
  */
 package org.atmosphere.atmosph4rx;
 
+
 import org.reactivestreams.Processor;
 
-public interface Link<T extends Processor<? super String, ? super String>, U> extends MultiLink<T,U> {
+public interface SocketsGroup<T extends Processor<? super String, ? super String>, U> {
 
-    default String topic(){
-        return id();
-    }
+    String topic();
 
-    String id();
+    SocketsGroup<T, U> publish(U message);
+
+    T toProcessor();
 
 }

@@ -15,15 +15,21 @@
  */
 package org.atmosphere.atmosph4rx;
 
-
 import org.reactivestreams.Processor;
 
-public interface MultiLink<T extends Processor<? super String, ? super String>, U> {
+/**
+ * A {@code Link} represent a connection to Atmosph4rX. The connection could be a {@code websocket} or an {@code http}
+ * connection.
+ *
+ * @param <T> a {@link Processor}
+ * @param <U> a {@link String}
+ */
+public interface AxSocket<T extends Processor<? super String, ? super String>, U> extends SocketsGroup<T,U> {
 
-    String topic();
+    default String topic(){
+        return id();
+    }
 
-    MultiLink<T, U> publish(U message);
-
-    T toProcessor();
+    String id();
 
 }

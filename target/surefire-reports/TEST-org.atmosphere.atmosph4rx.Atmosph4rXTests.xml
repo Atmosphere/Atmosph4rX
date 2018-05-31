@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="0" name="org.atmosphere.atmosph4rx.Atmosph4rXTests" time="0.579" errors="0" skipped="0">
+<testsuite tests="8" failures="0" name="org.atmosphere.atmosph4rx.Atmosph4rXTests" time="0.671" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/jre/lib"/>
@@ -7,7 +7,7 @@
     <property name="maven.wagon.http.ssl.insecure" value="true"/>
     <property name="gopherProxySet" value="false"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="maven.multiModuleProjectDirectory" value="/workspace/atmosph4re"/>
+    <property name="maven.multiModuleProjectDirectory" value="/workspace/Atmosph4rX"/>
     <property name="java.vendor.url" value="http://java.oracle.com/"/>
     <property name="path.separator" value=":"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -17,7 +17,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value="unknown"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/Users/jfarcand/workspace/atmosph4re"/>
+    <property name="user.dir" value="/Users/jfarcand/workspace/Atmosph4rX"/>
     <property name="java.runtime.version" value="1.8.0_60-b27"/>
     <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/jre/lib/endorsed"/>
@@ -64,11 +64,12 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest1" time="0.503"/>
-  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest2" time="0.008"/>
-  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest3" time="0.012"/>
-  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest4" time="0.009"/>
-  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest6" time="0.015"/>
-  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest7" time="0.012"/>
-  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest8" time="0.02"/>
+  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest1" time="0.555"/>
+  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest2" time="0.005"/>
+  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest3" time="0.011"/>
+  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest4" time="0.008"/>
+  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest6" time="0.014"/>
+  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest7" time="0.014"/>
+  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest8" time="0.022"/>
+  <testcase classname="org.atmosphere.atmosph4rx.Atmosph4rXTests" name="testRxTest9" time="0.042"/>
 </testsuite>

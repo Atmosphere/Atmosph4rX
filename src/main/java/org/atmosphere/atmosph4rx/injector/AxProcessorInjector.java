@@ -17,7 +17,7 @@ package org.atmosphere.atmosph4rx.injector;
 
 import org.atmosphere.atmosph4rx.annotation.Topic;
 import org.atmosphere.atmosph4rx.core.AxReactorProcessorFactory;
-import org.atmosphere.atmosph4rx.core.MultiLinkProcessor;
+import org.atmosphere.atmosph4rx.core.SocketsGroupProcessor;
 import org.reactivestreams.Processor;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,6 @@ import javax.inject.Inject;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,10 +38,10 @@ public class AxProcessorInjector {
     @Inject
     private AxReactorProcessorFactory processorsFactory;
 
-    private final Map<String, MultiLinkProcessor<?>> aXProcessors = new LinkedHashMap<>();
+    private final Map<String, SocketsGroupProcessor<?>> aXProcessors = new LinkedHashMap<>();
 
     @Bean
-    public MultiLinkProcessor<String> construct(DependencyDescriptor ip) {
+    public SocketsGroupProcessor<String> construct(DependencyDescriptor ip) {
 
 //        if (!ip.isPresent()) return null;
 
@@ -59,12 +58,12 @@ public class AxProcessorInjector {
     }
 
     @SuppressWarnings("unchecked")
-    private <IN> MultiLinkProcessor<String> toBroadcaster(String topic, Class<IN> in) {
+    private <IN> SocketsGroupProcessor<String> toBroadcaster(String topic, Class<IN> in) {
 
-        MultiLinkProcessor<String> cIn = (MultiLinkProcessor<String>) aXProcessors.get(topic);
+        SocketsGroupProcessor<String> cIn = (SocketsGroupProcessor<String>) aXProcessors.get(topic);
         if (cIn == null) {
             Processor<String, String> tp = processorsFactory.createMultiLinkProcessor();
-            cIn = new MultiLinkProcessor<String>() {
+            cIn = new SocketsGroupProcessor<String>() {
 
                 @Override
                 public Processor<String, String> toProcessor() {
@@ -77,7 +76,7 @@ public class AxProcessorInjector {
                 }
 
                 @Override
-                public MultiLinkProcessor<String> publish(String message) {
+                public SocketsGroupProcessor<String> publish(String message) {
                     tp.onNext(message);
                     return this;
                 }
