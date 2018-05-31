@@ -1,0 +1,8 @@
+org.atmosphere.atmosph4rx
+org.atmosphere.atmosph4rx.annotation
+org.atmosphere.atmosph4rx.boot
+org.atmosphere.atmosph4rx.core
+org.atmosphere.atmosph4rx.defaults
+org.atmosphere.atmosph4rx.injector
+org.atmosphere.atmosph4rx.util
+org.atmosphere.atmosph4rx.util.uri
