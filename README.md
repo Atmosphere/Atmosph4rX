@@ -18,17 +18,17 @@ Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.co
        public final class MySubscriber implements AxSubscriber<String> {
    
            @Topic("/message")
-           private MultiLinkProcessor<String> processor;
+           private SocketsGroupProcessor<String> processor;
    
            @Override
            public void onSubscribe(AxSubscription s) {
-               processor.subscribe(s.link());
+               processor.subscribe(s.socket());
            }
    
            @Override
            public void onNext(String next) {
-                // Push data to all {@link Subscriber}s. Subscribers include Link, AxSubscriber or Subscriber 
-                processor.publish(next);
+                // Push data to all {@link Subscriber}s.  
+                processor.toProcessor().onNext(next);
            }
    
            @Override
@@ -48,7 +48,7 @@ Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.co
        public final class MyPoJo {
    
            @Topic("/message")
-           private MultiLinkProcessor<String> processor;
+           private SocketsGroupProcessor<String> processor;
    
            @Open
            public void open() {
