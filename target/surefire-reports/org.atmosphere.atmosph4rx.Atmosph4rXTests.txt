@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: org.atmosphere.atmosph4rx.Atmosph4rXTests
--------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.135 sec
