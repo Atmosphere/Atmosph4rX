@@ -15,10 +15,10 @@
  */
 package org.atmosphere.atmosph4rx;
 
-import org.reactivestreams.Processor;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import reactor.core.publisher.FluxProcessor;
 
 /**
  * An extended {@link Subscriber} with support extended functionality.
@@ -81,7 +81,7 @@ public interface AxSubscriber<T> extends Subscriber<T> {
      * @param payload The {@link String} payload received
      * @param <U>
      */
-    default <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, String> link, String payload) {
+    default <U extends FluxProcessor<? super String, ? super String>> void onNext(AxSocket<U, String> link, String payload) {
     }
 
     /**
@@ -92,7 +92,7 @@ public interface AxSubscriber<T> extends Subscriber<T> {
      * @param <U>
      * @param <V>
      */
-    default <U extends Processor<? super String, ? super String>, V> void onNext(AxSocket<U, V> link) {
+    default <U extends FluxProcessor<? super String, ? super String>, V> void onNext(AxSocket<U, V> link) {
     }
 
     /**
@@ -103,7 +103,7 @@ public interface AxSubscriber<T> extends Subscriber<T> {
      * @param payload The {@link byte} payload received
      * @param <U>
      */
-    default <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, byte[]> link, byte[] payload) {
+    default <U extends FluxProcessor<? super String, ? super String>> void onNext(AxSocket<U, byte[]> link, byte[] payload) {
     }
 
 }

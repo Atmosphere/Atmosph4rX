@@ -15,21 +15,21 @@
  */
 package org.atmosphere.atmosph4rx.defaults;
 
+import org.atmosphere.atmosph4rx.AxSocket;
 import org.atmosphere.atmosph4rx.AxSubscriber;
 import org.atmosphere.atmosph4rx.AxSubscription;
-import org.atmosphere.atmosph4rx.AxSocket;
 import org.atmosphere.atmosph4rx.core.AxMetaData;
 import org.atmosphere.atmosph4rx.defaults.DefaultAxRouter.AxProcessor;
-import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
+import reactor.core.publisher.FluxProcessor;
 
 class AxSubscriberInvoker<T> implements AxSubscriber<T> {
 
     private final AxSubscriber<T> axSubscriber;
     private final AxMetaData metaData;
-    private final AxProcessor<Processor<String, String>> outputProcessor;
+    private final AxProcessor<FluxProcessor<String, String>> outputProcessor;
 
-    public AxSubscriberInvoker(AxSubscriber<T> axSubscriber, AxMetaData metaData, AxProcessor<Processor<String, String>> outputProcessor) {
+    public AxSubscriberInvoker(AxSubscriber<T> axSubscriber, AxMetaData metaData, AxProcessor<FluxProcessor<String, String>> outputProcessor) {
         this.axSubscriber = axSubscriber;
         this.metaData = metaData;
         this.outputProcessor = outputProcessor;
@@ -39,16 +39,16 @@ class AxSubscriberInvoker<T> implements AxSubscriber<T> {
     public void onNext(T payload) {
         axSubscriber.onNext(payload);
 
-        AxSocket<Processor<String, String>, String> single = new AxSocket<Processor<String, String>, String>() {
+        AxSocket<FluxProcessor<String, String>, String> single = new AxSocket<FluxProcessor<String, String>, String>() {
 
             @Override
-            public AxSocket<Processor<String, String>, String> publish(String message) {
+            public AxSocket<FluxProcessor<String, String>, String> publish(String message) {
                 toProcessor().onNext(message);
                 return this;
             }
 
             @Override
-            public Processor<String, String> toProcessor() {
+            public FluxProcessor<String, String> toProcessor() {
                 return outputProcessor.out();
             }
 
@@ -93,16 +93,16 @@ class AxSubscriberInvoker<T> implements AxSubscriber<T> {
         axSubscriber.onNext(payload);
     }
 
-    public <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, String> single, String payload) {
+    public <U extends FluxProcessor<? super String, ? super String>> void onNext(AxSocket<U, String> single, String payload) {
         axSubscriber.onNext(single, payload);
     }
 
     @Override
-    public <U extends Processor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
+    public <U extends FluxProcessor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
         axSubscriber.onNext(single);         
     }
 
-    public <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, byte[]> single, byte[] payload) {
+    public <U extends FluxProcessor<? super String, ? super String>> void onNext(AxSocket<U, byte[]> single, byte[] payload) {
         axSubscriber.onNext(single, payload);
     }
 }

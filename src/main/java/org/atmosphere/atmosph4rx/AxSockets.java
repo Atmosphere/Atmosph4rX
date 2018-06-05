@@ -16,9 +16,9 @@
 package org.atmosphere.atmosph4rx;
 
 
-import org.reactivestreams.Processor;
+import reactor.core.publisher.FluxProcessor;
 
-public interface AxSockets<T extends Processor<? super String, ? super String>, U> {
+public interface AxSockets<T extends FluxProcessor<? super String, ? super String>, U> {
 
     String topic();
 

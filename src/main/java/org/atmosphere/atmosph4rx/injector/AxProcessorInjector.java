@@ -18,12 +18,12 @@ package org.atmosphere.atmosph4rx.injector;
 import org.atmosphere.atmosph4rx.annotation.Topic;
 import org.atmosphere.atmosph4rx.core.AxReactorProcessorFactory;
 import org.atmosphere.atmosph4rx.core.AxSocketsProcessor;
-import org.reactivestreams.Processor;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.FluxProcessor;
 
 import javax.inject.Inject;
 import java.util.LinkedHashMap;
@@ -62,11 +62,11 @@ public class AxProcessorInjector {
 
         AxSocketsProcessor<String> cIn = (AxSocketsProcessor<String>) aXProcessors.get(topic);
         if (cIn == null) {
-            Processor<String, String> tp = processorsFactory.createMultiLinkProcessor();
+            FluxProcessor<String, String> tp = processorsFactory.socketsProcessor();
             cIn = new AxSocketsProcessor<String>() {
 
                 @Override
-                public Processor<String, String> toProcessor() {
+                public FluxProcessor<String, String> toProcessor() {
                     return tp;
                 }
 

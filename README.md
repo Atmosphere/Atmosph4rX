@@ -28,6 +28,7 @@ Atmosph4rX is a complete rewrite of the [Atmosphere Framework](https://github.co
            @Override
            public void onNext(String next) {
                 // Push data to all {@link Subscriber}s.  
+                // toProcessor return a FluxProcessor
                 processor.toProcessor().onNext(next);
            }
    

@@ -17,15 +17,16 @@ package org.atmosphere.atmosph4rx.core;
 
 import org.reactivestreams.Processor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxProcessor;
 
 /**
  * @author Jeanfrancois Arcand
  */
 public interface AxReactorProcessorFactory {
 
-    Processor<String,String> createLinkProcessor();
+    FluxProcessor<String,String> socketProcessor();
 
-    Processor<String, String> createMultiLinkProcessor();
+    FluxProcessor<String, String> socketsProcessor();
 
     Flux<String> toFlux(Processor<String,String> processor);
 }

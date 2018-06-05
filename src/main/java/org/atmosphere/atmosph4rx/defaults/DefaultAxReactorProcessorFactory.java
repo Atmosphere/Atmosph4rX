@@ -20,6 +20,7 @@ import org.reactivestreams.Processor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.TopicProcessor;
 import reactor.core.publisher.UnicastProcessor;
 
@@ -30,12 +31,12 @@ public class DefaultAxReactorProcessorFactory implements AxReactorProcessorFacto
     private int buffer;
 
     @Override
-    public Processor<String, String> createLinkProcessor() {
+    public FluxProcessor<String, String> socketProcessor() {
         return UnicastProcessor.create();
     }
 
     @Override
-    public TopicProcessor<String> createMultiLinkProcessor() {
+    public TopicProcessor<String> socketsProcessor() {
         return TopicProcessor.create();
     }
 

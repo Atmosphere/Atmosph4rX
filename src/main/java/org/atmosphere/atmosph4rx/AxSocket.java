@@ -16,6 +16,7 @@
 package org.atmosphere.atmosph4rx;
 
 import org.reactivestreams.Processor;
+import reactor.core.publisher.FluxProcessor;
 
 /**
  * A {@code Link} represent a connection to Atmosph4rX. The connection could be a {@code websocket} or an {@code http}
@@ -24,7 +25,7 @@ import org.reactivestreams.Processor;
  * @param <T> a {@link Processor}
  * @param <U> a {@link String}
  */
-public interface AxSocket<T extends Processor<? super String, ? super String>, U> extends AxSockets<T,U> {
+public interface AxSocket<T extends FluxProcessor<? super String, ? super String>, U> extends AxSockets<T,U> {
 
     default String topic(){
         return id();

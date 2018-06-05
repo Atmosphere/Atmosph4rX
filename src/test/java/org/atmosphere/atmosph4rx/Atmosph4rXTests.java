@@ -15,12 +15,14 @@
  */
 package org.atmosphere.atmosph4rx;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.atmosphere.atmosph4rx.annotation.ReactTo;
 import org.atmosphere.atmosph4rx.annotation.Topic;
 import org.atmosphere.atmosph4rx.core.AxSocketsProcessor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +34,10 @@ import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClien
 import org.springframework.web.reactive.socket.client.WebSocketClient;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.ReplayProcessor;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -42,9 +46,10 @@ import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Atmosph4rXApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) 
+@SpringBootTest(classes = Atmosph4rXApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class Atmosph4rXTests {
 
     @ReactTo("/test1")
@@ -338,7 +343,7 @@ public class Atmosph4rXTests {
         }
 
         @Override
-        public <U extends Processor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
+        public <U extends FluxProcessor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
             onNext = true;
             single.toProcessor().onNext("test6-ping");
             latch.countDown();
@@ -408,7 +413,7 @@ public class Atmosph4rXTests {
         }
 
         @Override
-        public <U extends Processor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
+        public <U extends FluxProcessor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
             onNext = true;
             broadcaster.publish("test7-ping");
             latch.countDown();
@@ -529,7 +534,7 @@ public class Atmosph4rXTests {
         RxTest8.latch.await();
 
         assertEquals(input.mergeWith(input2).collectList().block(TIMEOUT), output.mergeWith(output2).collectList().block(TIMEOUT));
-        
+
         assertTrue(RxTest8.onSubscribe);
         assertTrue(RxTest8.onNext);
         assertTrue(!RxTest8.onComplete);
@@ -615,6 +620,131 @@ public class Atmosph4rXTests {
         assertTrue(RxTest9.onNext);
         assertTrue(!RxTest9.onComplete);
         assertTrue(!RxTest9.onError);
+
+    }
+
+    @ReactTo("/test10")
+    public final static class RxTest10 implements AxSubscriber<String> {
+
+        static CountDownLatch latch = new CountDownLatch(1);
+
+        static boolean onSubscribe;
+        static boolean onNext;
+        static boolean onComplete;
+        static boolean onError;
+
+        @Topic("test-10")
+        private AxSocketsProcessor<String> broadcaster;
+
+        @Override
+        public void onSubscribe(AxSubscription s) {
+            onSubscribe = true;
+            broadcaster.subscribe(s.socket());
+        }
+
+        @Override
+        public void onNext(String next) {
+            onNext = true;
+
+            try {
+                Flux.just(mapper.readValue(next, Message.class))
+                        .map(m -> new Message(m.getPath(), m.getPayload() + "-fluxed"))
+                        .map(m -> {
+                            try {
+                                return mapper.writeValueAsString(m);
+                            } catch (JsonProcessingException e) {
+                                return "";
+                            }
+                        })
+                        .doOnNext(m -> broadcaster.toProcessor().onNext(m))
+                        .subscribe();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            latch.countDown();
+        }
+
+        @Override
+        public void onComplete() {
+            onComplete = true;
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+            onError = true;
+        }
+
+    }
+
+    private final static ObjectMapper mapper = new ObjectMapper();
+
+    private final static class Message {
+
+        private final String path;
+        private final String payload;
+
+
+        private Message(@JsonProperty("path") String path,@JsonProperty("payload") String payload) {
+            this.path = path;
+            this.payload = payload;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public String getPayload() {
+            return payload;
+        }
+    }
+
+    @Test
+    public void testRxTest10() throws URISyntaxException, InterruptedException {
+        final Logger logger = LoggerFactory.getLogger("test");
+        WebSocketClient client = new ReactorNettyWebSocketClient();
+        Flux<Message> input = Flux.just(new Message("/test", "hello"));
+
+        ReplayProcessor<Message> output = ReplayProcessor.create(1);
+
+
+        URI url = new URI("ws://127.0.0.1:" + port + "/test10");
+        client.execute(url, session ->
+                session
+                        .send(input.doOnNext(s -> logger.debug("outbound " + s)).map(m -> {
+                            try {
+                                return session.textMessage(mapper.writeValueAsString(m));
+                            } catch (JsonProcessingException e) {
+                                return session.textMessage("ERROR");
+                            }
+                        }))
+                        .thenMany(session.receive().take(1).map(m -> {
+                            try {
+                                return mapper.readValue(m.getPayloadAsText(), Message.class);
+                            } catch (IOException e) {
+                                return new Message("","");
+                            }
+                        }))
+                        .subscribeWith(output)
+                        .doOnNext(s -> logger.debug("inbound " + s))
+                        .then())
+                .doOnSuccessOrError((aVoid, ex) -> logger.debug("Done: " + (ex != null ? ex.getMessage() : "success")))
+                .block(TIMEOUT);
+
+        RxTest10.latch.await();
+
+        Message m1 = input.take(1).blockFirst(TIMEOUT);
+        Message m2 = output.take(1).blockFirst(TIMEOUT);
+
+        assertEquals(m1.getPath(), m2.getPath());
+        assertNotEquals(m1.getPayload(), m2.getPayload());
+        assertEquals(m1.getPayload() + "-fluxed", m2.getPayload());
+
+        assertTrue(RxTest10.onSubscribe);
+        assertTrue(RxTest10.onNext);
+        assertTrue(!RxTest10.onComplete);
+        assertTrue(!RxTest10.onError);
 
     }
 

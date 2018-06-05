@@ -17,16 +17,16 @@ package org.atmosphere.atmosph4rx;
 
 import org.atmosphere.atmosph4rx.core.AxMetaData;
 import org.atmosphere.atmosph4rx.defaults.DefaultAxRouter;
-import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
+import reactor.core.publisher.FluxProcessor;
 
 public class AxSubscription implements Subscription {
 
     private final Subscription subscription;
     private final AxMetaData metaData;
-    private final DefaultAxRouter.AxProcessor<Processor<String, String>> outputProcessor;
+    private final DefaultAxRouter.AxProcessor<FluxProcessor<String, String>> outputProcessor;
 
-    public AxSubscription(Subscription subscription, AxMetaData metaData, DefaultAxRouter.AxProcessor<Processor<String, String>> outputProcessor) {
+    public AxSubscription(Subscription subscription, AxMetaData metaData, DefaultAxRouter.AxProcessor<FluxProcessor<String, String>> outputProcessor) {
         this.subscription = subscription;
         this.metaData = metaData;
         this.outputProcessor = outputProcessor;
@@ -36,16 +36,16 @@ public class AxSubscription implements Subscription {
         return metaData;
     }
 
-    public AxSocket<Processor<? super String, ? super String>, String> socket() {
-        return new AxSocket<Processor<? super String, ? super String>, String>() {
+    public AxSocket<FluxProcessor<? super String, ? super String>, String> socket() {
+        return new AxSocket<FluxProcessor<? super String, ? super String>, String>() {
             @Override
-            public AxSockets<Processor<? super String, ? super String>, String> publish(String message) {
+            public AxSockets<FluxProcessor<? super String, ? super String>, String> publish(String message) {
                 outputProcessor.out().onNext(message);
                 return this;
             }
 
             @Override
-            public Processor<String, String> toProcessor() {
+            public FluxProcessor<String, String> toProcessor() {
                 return outputProcessor.out();
             }
 

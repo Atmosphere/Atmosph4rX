@@ -17,14 +17,14 @@ package org.atmosphere.atmosph4rx.core;
 
 import org.atmosphere.atmosph4rx.AxSocket;
 import org.atmosphere.atmosph4rx.AxSockets;
-import org.reactivestreams.Processor;
+import reactor.core.publisher.FluxProcessor;
 
-public interface AxSocketsProcessor<IN extends String> extends AxSockets<Processor<? super String, ? super String>, String> {
+public interface AxSocketsProcessor<IN extends String> extends AxSockets<FluxProcessor<? super String, ? super String>, String> {
 
     @Override
-    Processor<String,String> toProcessor();
+    FluxProcessor<String,String> toProcessor();
 
-    default void subscribe(AxSocket<Processor<? super String, ? super String>, IN> single){
+    default void subscribe(AxSocket<FluxProcessor<? super String, ? super String>, IN> single){
         toProcessor().subscribe(single.toProcessor());
     }
 }

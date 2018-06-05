@@ -17,18 +17,13 @@ package org.atmosphere.atmosph4rx.defaults;
 
 import org.atmosphere.atmosph4rx.AxSubscriber;
 import org.atmosphere.atmosph4rx.annotation.ReactTo;
-import org.atmosphere.atmosph4rx.core.AnnotationsScanner;
-import org.atmosphere.atmosph4rx.core.AxAnnotationDrivenSubscriber;
-import org.atmosphere.atmosph4rx.core.AxMetaData;
-import org.atmosphere.atmosph4rx.core.AxReactorProcessorFactory;
-import org.atmosphere.atmosph4rx.core.AxRouter;
-import org.atmosphere.atmosph4rx.core.AxThrowablesHandler;
-import org.atmosphere.atmosph4rx.core.STAGE;
+import org.atmosphere.atmosph4rx.core.*;
 import org.atmosphere.atmosph4rx.util.EndpointMapper;
 import org.reactivestreams.Processor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 
 import javax.inject.Inject;
@@ -119,8 +114,8 @@ public class DefaultAxRouter implements AxRouter {
 
     @SuppressWarnings("unchecked")
     public Optional<AxConnection> map(AxSubscriber<String> axSubscriber, AxMetaData axMetaData, String id) {
-        Processor<String, String> processor = processorsFactory.createLinkProcessor();
-        AxProcessor<Processor<String, String>> axProcessor = new AxProcessor<>(processor, id);
+        FluxProcessor<String, String> processor = processorsFactory.socketProcessor();
+        AxProcessor<FluxProcessor<String, String>> axProcessor = new AxProcessor<>(processor, id);
 
         if (processor instanceof Flux) {
             // TODO
@@ -144,7 +139,7 @@ public class DefaultAxRouter implements AxRouter {
         return annotationsScanner.routes();
     }
 
-    public final static class AxProcessor<T extends Processor> {
+    public final static class AxProcessor<T extends FluxProcessor> {
 
         private T processor;
         private final String id;

@@ -15,24 +15,20 @@
  */
 package org.atmosphere.atmosph4rx.core;
 
+import org.atmosphere.atmosph4rx.AxSocket;
 import org.atmosphere.atmosph4rx.AxSubscriber;
 import org.atmosphere.atmosph4rx.AxSubscription;
-import org.atmosphere.atmosph4rx.AxSocket;
 import org.atmosphere.atmosph4rx.annotation.Close;
 import org.atmosphere.atmosph4rx.annotation.Error;
 import org.atmosphere.atmosph4rx.annotation.Message;
 import org.atmosphere.atmosph4rx.annotation.Open;
 import org.atmosphere.atmosph4rx.core.AnnotationsScanner.Context;
-import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.FluxProcessor;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -110,21 +106,21 @@ public class AxAnnotationDrivenSubscriber implements AxSubscriber<String> {
         }
     }
 
-    public <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, String> single, String payload) {
+    public <U extends FluxProcessor<? super String, ? super String>> void onNext(AxSocket<U, String> single, String payload) {
         Context<?> context = contextMap.get(Message.class.getName());
         if (context != null) {
             invoke(Message.class.getSimpleName(), context, payload, single);
         }
     }
 
-    public <U extends Processor<? super String, ? super String>, T> void onNext(AxSocket<U, T> single) {
+    public <U extends FluxProcessor<? super String, ? super String>, T> void onNext(AxSocket<U, T> single) {
     }
 
-    public <U extends Processor<? super String, ? super String>> void onNext(AxSocket<U, byte[]> single, byte[] payload) {
+    public <U extends FluxProcessor<? super String, ? super String>> void onNext(AxSocket<U, byte[]> single, byte[] payload) {
         // TODO
     }
 
-    private <T, U, V  extends Processor<? super String, ? super String>> T invoke(String simpleName, Context<T> m, U payload, AxSocket<V, String> single) {
+    private <T, U, V  extends FluxProcessor<? super String, ? super String>> T invoke(String simpleName, Context<T> m, U payload, AxSocket<V, String> single) {
         List<Object> objects = methodObjects(simpleName, m.method().getParameterTypes(), payload, single);
 
         if (objects.isEmpty()) {
@@ -144,7 +140,7 @@ public class AxAnnotationDrivenSubscriber implements AxSubscriber<String> {
         return t;
     }
 
-    private <T,V extends Processor<? super String, ? super String>> List<Object> methodObjects(String simpleName, Class<?>[] parameterTypes, T payload, AxSocket<V, String> single) {
+    private <T,V extends FluxProcessor<? super String, ? super String>> List<Object> methodObjects(String simpleName, Class<?>[] parameterTypes, T payload, AxSocket<V, String> single) {
         List<Object> l = Stream.of(parameterTypes)
                 .filter(supportedTypes::contains)
                 .map(m -> match(m, payload, single))
@@ -158,7 +154,7 @@ public class AxAnnotationDrivenSubscriber implements AxSubscriber<String> {
         return l;
     }
 
-    private <T,V extends Processor<? super String, ? super String>> Object match(Class<?> m, T payload, AxSocket<V, String> single) {
+    private <T,V extends FluxProcessor<? super String, ? super String>> Object match(Class<?> m, T payload, AxSocket<V, String> single) {
 
         if (single != null && AxSocket.class.equals(m)) {
             return single;
