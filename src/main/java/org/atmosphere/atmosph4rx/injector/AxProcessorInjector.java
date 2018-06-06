@@ -43,8 +43,6 @@ public class AxProcessorInjector {
     @Bean
     public AxSocketsProcessor<String> construct(DependencyDescriptor ip) {
 
-//        if (!ip.isPresent()) return null;
-
         Topic topic = AnnotationUtils.getAnnotation(ip.getAnnotatedElement(), Topic.class);
 
         List<Class<?>> resolvableTypes = Stream.of(ip.getResolvableType().getGenerics())
