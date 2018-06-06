@@ -656,8 +656,9 @@ public class Atmosph4rXTests {
                                 return "";
                             }
                         })
-                        .doOnNext(m -> broadcaster.toProcessor().onNext(m))
-                        .subscribe();
+                        .publish()
+                        .autoConnect()
+                        .subscribe(broadcaster.toProcessor());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -686,7 +687,7 @@ public class Atmosph4rXTests {
         private final String payload;
 
 
-        private Message(@JsonProperty("path") String path,@JsonProperty("payload") String payload) {
+        private Message(@JsonProperty("path") String path, @JsonProperty("payload") String payload) {
             this.path = path;
             this.payload = payload;
         }
@@ -723,7 +724,7 @@ public class Atmosph4rXTests {
                             try {
                                 return mapper.readValue(m.getPayloadAsText(), Message.class);
                             } catch (IOException e) {
-                                return new Message("","");
+                                return new Message("", "");
                             }
                         }))
                         .subscribeWith(output)
