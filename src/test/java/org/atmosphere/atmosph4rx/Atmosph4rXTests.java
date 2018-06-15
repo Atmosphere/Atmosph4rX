@@ -347,12 +347,12 @@ public class Atmosph4rXTests {
         public <U extends FluxProcessor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
             onNext = true;
             single.toProcessor().onNext("test6-ping");
-            latch.countDown();
         }
 
         @Override
         public void onComplete() {
             onComplete = true;
+            latch.countDown();
         }
 
         @Override
@@ -389,7 +389,7 @@ public class Atmosph4rXTests {
 
         assertTrue(RxTest6.onSubscribe);
         assertTrue(RxTest6.onNext);
-        assertTrue(!RxTest6.onComplete);
+        assertTrue(RxTest6.onComplete);
         assertTrue(!RxTest6.onError);
 
     }
@@ -465,7 +465,7 @@ public class Atmosph4rXTests {
     @ReactTo("/test8")
     public final static class RxTest8 implements AxSubscriber<String> {
 
-        static CountDownLatch latch = new CountDownLatch(2);
+        static CountDownLatch latch = new CountDownLatch(3);
 
         static boolean onSubscribe;
         static boolean onNext;
@@ -491,6 +491,7 @@ public class Atmosph4rXTests {
         @Override
         public void onComplete() {
             onComplete = true;
+            latch.countDown();
         }
 
         @Override
@@ -538,7 +539,7 @@ public class Atmosph4rXTests {
 
         assertTrue(RxTest8.onSubscribe);
         assertTrue(RxTest8.onNext);
-        assertTrue(!RxTest8.onComplete);
+        assertTrue(RxTest8.onComplete);
         assertTrue(!RxTest8.onError);
 
     }
@@ -546,7 +547,7 @@ public class Atmosph4rXTests {
     @ReactTo("/test9")
     public final static class RxTest9 implements AxSubscriber<String> {
 
-        static CountDownLatch latch = new CountDownLatch(2);
+        static CountDownLatch latch = new CountDownLatch(3);
 
         static boolean onSubscribe;
         static boolean onNext;
@@ -572,6 +573,7 @@ public class Atmosph4rXTests {
         @Override
         public void onComplete() {
             onComplete = true;
+            latch.countDown();
         }
 
         @Override
@@ -619,7 +621,7 @@ public class Atmosph4rXTests {
 
         assertTrue(RxTest9.onSubscribe);
         assertTrue(RxTest9.onNext);
-        assertTrue(!RxTest9.onComplete);
+        assertTrue(RxTest9.onComplete);
         assertTrue(!RxTest9.onError);
 
     }
