@@ -397,8 +397,6 @@ public class Atmosph4rXTests {
     @ReactTo("/test7")
     public final static class RxTest7 implements AxSubscriber<String> {
 
-        static CountDownLatch latch = new CountDownLatch(1);
-
         static boolean onSubscribe;
         static boolean onNext;
         static boolean onComplete;
@@ -417,7 +415,6 @@ public class Atmosph4rXTests {
         public <U extends FluxProcessor<? super String, ? super String>, V> void onNext(AxSocket<U, V> single) {
             onNext = true;
             broadcaster.publish("test7-ping");
-            latch.countDown();
         }
 
         @Override
@@ -439,7 +436,7 @@ public class Atmosph4rXTests {
         Flux<String> input = Flux.just("test7-ping");
 
         ReplayProcessor<Object> output = ReplayProcessor.create(1);
-
+        final CountDownLatch latch = new CountDownLatch(1);
         URI url = new URI("ws://127.0.0.1:" + port + "/test7");
         client.execute(url, session ->
                 session
@@ -448,18 +445,20 @@ public class Atmosph4rXTests {
                         .subscribeWith(output)
                         .doOnNext(s -> logger.debug("inbound " + s))
                         .then())
-                .doOnSuccessOrError((aVoid, ex) -> logger.debug("Done: " + (ex != null ? ex.getMessage() : "success")))
+                .doOnError(ex -> logger.error("Done", ex))
+                .doOnSuccess(aVoid -> {
+                    assertTrue(RxTest7.onSubscribe);
+                    assertTrue(RxTest7.onNext);
+                    assertTrue(!RxTest7.onComplete);
+                    assertTrue(!RxTest7.onError);
+                    latch.countDown();
+                    logger.debug("Done: success");
+
+                })
                 .block(TIMEOUT);
 
         assertEquals(input.collectList().block(TIMEOUT), output.collectList().block(TIMEOUT));
-
-        RxTest7.latch.await();
-
-        assertTrue(RxTest7.onSubscribe);
-        assertTrue(RxTest7.onNext);
-        assertTrue(!RxTest7.onComplete);
-        assertTrue(!RxTest7.onError);
-
+        latch.await();
     }
 
     @ReactTo("/test8")
