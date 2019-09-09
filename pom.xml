@@ -58,7 +58,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <springboot.version>2.0.3.RELEASE</springboot.version>
+        <springboot.version>2.1.8.RELEASE</springboot.version>
     </properties>
 
     <dependencies>
@@ -75,21 +75,21 @@
         </dependency>
 
         <dependency>
-            <groupId>io.projectreactor.ipc</groupId>
+            <groupId>io.projectreactor.netty</groupId>
             <artifactId>reactor-netty</artifactId>
-            <version>0.7.8.RELEASE</version>
+            <version>0.8.11.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
-            <version>3.1.8.RELEASE</version>
+            <version>3.2.12.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
-            <version>3.1.8.RELEASE</version>
+            <version>3.2.12.RELEASE</version>
             <scope>test</scope>
         </dependency>
 
